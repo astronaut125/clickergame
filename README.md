@@ -1,4 +1,4 @@
-# clikergame
+# clickergame
 a game you click
 
 Currently still being produced as my second project on github.
