@@ -1,24 +1,29 @@
 #still evading the law
 
 import tkinter as tk
+import random
 
 window = tk.Tk()
 window.title("MaliciousProgramTotallyNotHacking.exe")
-window.geometry("300x300")
+window.geometry("900x300")
 
 points = 0
 activeMultiplier = 1
 unlock_threshold = 10
 
 auto_clickers = 0
-auto_clicker_cost = 5
+auto_clicker_cost = 500
 
 label = tk.Label(window, text="Points: 0", font=("Comic Sans", 16))
 label.pack(pady=20)
 
-#Slabel to show multiplier and auto-clickers
+#label to show multiplier and auto-clickers
 status_label = tk.Label(window, text=f"Multiplier: {activeMultiplier} | Auto-Clickers: {auto_clickers}", font=("Comic Sans", 12))
 status_label.pack(pady=5)
+
+cursor_frame = tk.Frame(window, bg="#007BFF")
+cursor_frame.pack(pady=10)
+cursors = []
 
 def increase_points():
     global points
@@ -49,6 +54,9 @@ def buy_auto_clicker():
         autoclicker.config(text=f"We raised our prices! AutoClicker now costs {auto_clicker_cost} Press this button to buy Autoclicker again")
         #Update label after buying auto-clicker
         status_label.config(text=f"Multiplier: {activeMultiplier} | Auto-Clickers: {auto_clickers}")
+        cursor = tk.Label(cursor_frame, text="🖱️", font=("Comic Sans", 20), bg="#007BFF")
+        cursor.pack(side="left", padx=5)
+        cursors.append(cursor)
 
 def auto_click():
     global points
@@ -57,12 +65,32 @@ def auto_click():
         label.config(text=f"Points: {points}")
         #Update auto click status
         status_label.config(text=f"Multiplier: {activeMultiplier} | Auto-Clickers: {auto_clickers}")
+        animate_cursors()
     window.after(1000, auto_click)
+
+def increase_points():
+    global points
+    crit = random.random() < 0.1  #10% chance
+    gain = activeMultiplier * (5 if crit else 1)
+    points += gain
+    label.config(text=f"Points: {points}")
+    status_label.config(text=f"Multiplier: {activeMultiplier} | Auto-Clickers: {auto_clickers}")
+    if crit:
+        print("You caused a lot of chaos young human...")
+
+def animate_cursors():
+    for cursor in cursors:
+        cursor.config(text="🔘")  # Click visual
+    window.after(100, reset_cursors)
+
+def reset_cursors():
+    for cursor in cursors:
+        cursor.config(text="🖱️")  # Reset to idle
 
 click_button = tk.Button(window, text="Cause Destruction", command=increase_points, font=("Comic Sans", 14))
 click_button.pack(pady=10)
 
-# Upgrade button label to tell truth
+#Upgrade button label to tell truth
 upgrade_button = tk.Button(window, text=f"Upgrade (costs {unlock_threshold})", command=upgrade_action, font=("Comic Sans", 14))
 upgrade_button.pack(pady=10)
 
